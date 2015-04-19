@@ -20,6 +20,11 @@ class AuthController extends Controller {
 
 	use AuthenticatesAndRegistersUsers;
 
+    /**
+     * Where to redirect on successful registration
+     * @var string
+     */
+    protected $redirectTo = 'notices/create';
 	/**
 	 * Create a new authentication controller instance.
 	 *
