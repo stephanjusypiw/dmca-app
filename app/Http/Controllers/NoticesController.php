@@ -20,6 +20,8 @@ class NoticesController extends Controller {
     public function __construct()
     {
         $this->middleware('auth');
+
+        parent::__construct();
     }
 
     /**
@@ -27,7 +29,7 @@ class NoticesController extends Controller {
      */
     public function index()
     {
-        return Auth::user()->notices;
+        return $this->user->notices;
     }
 
     /**
@@ -46,13 +48,13 @@ class NoticesController extends Controller {
     /**
      * Ask the user to conform the DMCA that will be delivered
      * @param PrepareNoticeRequest $request
-     * @param Guard $auth
+
      * @return \Illuminate\View\View
      */
-    public function confirm(PrepareNoticeRequest $request, Guard $auth)
+    public function confirm(PrepareNoticeRequest $request)
     {
 
-        $template = $this->compileDmcaTemplate($data = $request->all(), $auth);
+        $template = $this->compileDmcaTemplate($data = $request->all());
 
         session()->flash('dmca', $data);
 
@@ -83,14 +85,14 @@ class NoticesController extends Controller {
     /** use
      * Compile the DMCA template from the form data
      * @param $data
-     * @param Guard $auth
+     *
      * @return mixed
      */
-    private function compileDmcaTemplate($data, Guard $auth)
+    private function compileDmcaTemplate($data)
     {
         $data = $data + [
-                'name' => $auth->user()->name,
-                'email' => $auth->user()->email,
+                'name' => $this->user->name,
+                'email' => $this->user->email,
             ];
 
         return view()->file(app_path('Http/Templates/dmca.blade.php'), $data);
@@ -100,12 +102,13 @@ class NoticesController extends Controller {
     /**
      * Create and persist new DMCA notice
      * @param Request $request
+     * @return \Illuminate\Database\Eloquent\Model
      */
     private function createNotice(Request $request)
     {
         $notice = session()->get('dmca') + ['template' => $request->input('template')];
       //  $notice = Notice::open($data)->useTemplate($request->input('template'));
-        $notice = Auth::user()->notices()->create($notice);
+        $notice = $this->user->notices()->create($notice);
 
         return $notice;
     }

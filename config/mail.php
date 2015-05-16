@@ -56,7 +56,7 @@ return [
 	|
 	*/
 
-	'from' => ['address' => 'dmcasender@gmail.com', 'name' => 'DMCA Sender'],
+	'from' => ['address' => 'stephanj@internode.on.net', 'name' => 'DMCA Sender'],
 
 	/*
 	|--------------------------------------------------------------------------
