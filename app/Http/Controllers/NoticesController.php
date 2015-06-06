@@ -75,13 +75,35 @@ class NoticesController extends Controller {
         $notice = $this->createNotice($request);
 
         // fire off the email
-        Mail::queue('emails.dmca', compact('notice'), function($message) use ($notice){
+        Mail::queue(['text' => 'emails.dmca'], compact('notice'), function($message) use ($notice){
             $message->from($notice->getOwnerEmail())
                     ->to($notice->getRecipientEmail())
                     ->subject('DMCA Notice');
         });
 
+        flash('Your DMCA notice has been delivered!');
+
         return redirect('notices');
+    }
+
+    /**
+     * @param $noticeId
+     * @param Request $request
+     * @return mixed
+     */
+    public function update($noticeId, Request $request)
+    {
+        // determine if the check box is checked
+        $isRemoved = $request->has('content_removed');
+
+        // track down the notice and update the column
+        // to true or false
+        Notice::findOrFail($noticeId)
+            ->update(['content_removed' => $isRemoved]);
+
+        // redirect to the previous page
+//        return redirect()->back();
+
     }
 
     /** use

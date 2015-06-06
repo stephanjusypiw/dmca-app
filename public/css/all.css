@@ -6600,6 +6600,17 @@ button.close {
 .error-padding {
   padding: 23px; }
 
+.flash {
+  background: #f66422;
+  color: white;
+  width: 200px;
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  padding: 1em;
+  display: none;
+  /* hide be default */ }
+
 
 /*# sourceMappingURL=app.css.map */
 /*# sourceMappingURL=all.css.map */

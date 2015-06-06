@@ -20,15 +20,21 @@
                     <td>{!! link_to($notice->original_link) !!}</td>
                     <td>{{ $notice->created_at->diffForHumans() }}</td>
                     <td>
-                        {!! Form::open() !!}
+                        {!! Form::open(['data-remote', 'method' => 'PATCH', 'url' => 'notices/' . $notice->id]) !!}
                         <div class="form-group">
-                            {!! Form::checkbox('content_removed', $notice->content_removed, $notice->content_removed) !!}
+                            {!! Form::checkbox('content_removed', $notice->content_removed, $notice->content_removed, ['data-click-submits-form']) !!}
                         </div>
                         {!! Form::close() !!}
                     </td>
                 </tr>
             @endforeach
         </tbody>
-
     </table>
+
+    <!--  Add the line   include('archived') if you wish to have a list of archived notices -->
+
+
+    @unless(count($notices))
+        <p class="text-center">You haven't any DMCA notices yet!</p>
+    @endunless
 @endsection
